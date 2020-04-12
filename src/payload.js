@@ -1,26 +1,38 @@
 const uuid = require('uuid4');
 const constants = require('./constants');
 
-module.exports = ({ projectName, type, startdate = "", duedate = "", tags = ',personal,', state = constants.state.next }) => {
+module.exports = ({
+    name,
+    type,
+    parentId = '',
+    startDate = '',
+    dueDate = '',
+    tags = ',personal,',
+    state = constants.state.next,
+    projectType = constants.projectType.parallel,
+    note = '',
+    seqp = 0
+}) => {
+
     const data = {
         id: uuid(),
-        name: projectName,
+        name,
         type,
         state,
-        parentid: "",
-        waitingfor: "",
+        parentid: parentId,
+        waitingfor: '',
         completed: 0,
         cancelled: 0,
         seq: 0,
-        seqp: 0,
+        seqp,
         seqt: 0,
         tags,
-        note: "",
-        ps: '0',
+        note,
+        ps: projectType,
         etime: 0,
         energy: 0,
-        startdate,
-        duedate,
+        startdate: startDate,
+        duedate: dueDate,
         recurring: null
     };
 
