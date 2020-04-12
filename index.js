@@ -1,18 +1,50 @@
 require('dotenv').config();
+
+const PORT = process.env.PORT || 3000;
 const bookProjectBuilder = require('./src/bookProjectBuilder');
 
-(async function () {
-    const credentials = {
-        userName: process.env.USER_NAME,
-        password: process.env.PASSWORD
-    };
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+app.use(bodyParser.json());
 
-    const parameters = {
-        bookTitle: process.env.BOOK_TITLE,
-        bookDescription: process.env.BOOK_DESCRIPTION,
-        percentagePerDay: process.env.PERCENTAGE_PER_DAY,
-        startDate: process.env.START_DATE
-    }; 
+const validateRequiredFields = (req, res) => {
+    const requiredFields = [
+        'userName',
+        'password',
+        'bookTitle',
+        'percentagePerDay',
+        'startDate'
+    ];
 
-    bookProjectBuilder.buildBookProject(credentials, parameters);
-})();
+    let failure = false;
+
+    for (field of requiredFields) {
+        if (!req.body[field]) {
+            res.status(400).send(`${field} is required`);
+            failure = true;
+            break;
+        }
+    }
+
+    return failure;
+}
+
+app.post('/create-project', async (req, res) => {
+    console.log('API was called');
+
+    if (validateRequiredFields(req, res)) {
+        return;
+    }
+
+    bookProjectBuilder.buildBookProject(req.body)
+        .then(() => res.sendStatus(200))
+        .catch(err => {
+            console.error(err);
+            res.sendStatus(500);
+        })
+});
+
+app.listen(PORT, () =>  {
+    console.log('App is listening on port ' + PORT);
+});

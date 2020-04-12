@@ -2,8 +2,8 @@ const authenticate = require('./auth');
 const { createProject, createTask } = require('./tasks');
 const orchestrator = require('./orchestrator');
 
-module.exports.buildBookProject = async (credentials, parameters) => {
-    const authToken = await authenticate(credentials.userName, credentials.password);
+module.exports.buildBookProject = async (parameters) => {
+    const authToken = await authenticate(parameters.userName, parameters.password);
 
     const tasks = orchestrator.createTasks(parameters.percentagePerDay, parameters.startDate);
     const projectDueDate = tasks[tasks.length - 1].dueDate;
