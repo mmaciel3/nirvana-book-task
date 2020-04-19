@@ -37,12 +37,15 @@ app.post('/create-project', async (req, res) => {
         return;
     }
 
-    bookProjectBuilder.buildBookProject(req.body)
-        .then(() => res.sendStatus(200))
+    bookProjectBuilder.buildBookProject(req.body, req.headers['accept-language'])
+        .then(() => {
+            console.log('API finished successfully.');
+            res.sendStatus(200);
+        })
         .catch(err => {
             console.error(err);
             res.sendStatus(500);
-        })
+        });
 });
 
 app.listen(PORT, () =>  {

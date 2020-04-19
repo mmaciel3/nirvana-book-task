@@ -4,8 +4,6 @@ const md5 = require('md5');
 const { URLSearchParams } = require('url');
 
 module.exports = (userName, password) => {
-    var currentDate = new Date();
-
     const urlParameters = new URLSearchParams();
     urlParameters.append('api', 'rest');
     urlParameters.append('requestid', uuid4());

@@ -8,7 +8,7 @@ module.exports.createProject = async ({ authToken, projectName, dueDate, note })
     const url = buildUrl(authToken);
 
     const data = payload({
-        name: `Ler livro ${projectName}`,
+        name: projectName,
         type: constants.type.project,
         dueDate,
         state: constants.state.activeProject,
